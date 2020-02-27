@@ -1,30 +1,149 @@
-# vue-treechart
+# vue-treecharts
 
-# props
+[![npm](https://camo.githubusercontent.com/f1e43ea61f962932d2fd7e05c558eb460191f41e/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f762f7675652e737667)](https://www.npmjs.com/package/vue-treecharts)
 
-- data
-  type: Object
+> Tree chart component based on Vue 2.0
 
-- nodeKey
-  type: String | Number | Function | Boolean,
-  default: undefined
+## Introduction
 
-- childrenKey
-  type: String,
-  default: "children"
+高度可定制的树图表组件组件，支持 vue slot 特性自定义树节点 DOM，实现动态可编辑的树图表，如**决策树**。
 
-- transition
-  type: Number,
-  default: 0
+实现思路：树节点（TreeChartNode）组件基于递归实现，先序遍历以自上向下（DOM）计算子树高度，自底向顶（树结构）计算子树宽度。随后用 svg path d 计算并绘制贝塞尔曲线以连接父子节点
 
-- lineColor
-  type: String,
-  default: "#666"
+Contact me for any questions: nerfthisan@163.com
 
-- lineOffset
-  type: Number,
-  default: 20
+## Install
 
-- lineWidth
-  type: Number,
-  default: 2
+`npm install vue-treecharts --save`
+
+## Example
+
+<img src="https://raw.githubusercontent.com/i58000/vue-treecharts/master/example.png" width="280"/>
+
+```html
+<template>
+  <div id="app">
+    <TreeChart
+      ref="treechart"
+      :data="treedata"
+      :childrenKey="'children'"
+      :lineColor="'#0006'"
+      :lineWidth="1"
+      :lineOffset="20"
+      :transition="0.3"
+      :nodeKey="item => item.data.name"
+    >
+      <template v-slot:node="{node}">
+        <div
+          class="my-tree-node"
+          :style="{ background: node.data.bgcolor }"
+          v-text="node.data.name"
+        ></div>
+      </template>
+    </TreeChart>
+  </div>
+</template>
+
+<script>
+  import TreeChart from 'vue-treecharts'
+  export default {
+    components: {
+      TreeChart
+    },
+    data() {
+      return {
+        treedata: {
+          data: { name: 'root', bgcolor: '#1890ff' },
+          children: [
+            {
+              data: { name: 'L1#1', bgcolor: '#1890ff' },
+              children: [
+                {
+                  data: { name: 'L2#1', bgcolor: '#1890ff' }
+                },
+                {
+                  data: { name: 'L2#2', bgcolor: '#f5222d' }
+                },
+                {
+                  data: { name: 'L2#3', bgcolor: '#52c41a' }
+                },
+                {
+                  data: { name: 'L2#4', bgcolor: '#faad14' }
+                }
+              ]
+            },
+            {
+              data: {
+                name: 'L1#2-loooooooooooooong',
+                bgcolor: '#1890ff'
+              }
+            },
+            {
+              data: {
+                name: 'L1#3',
+                bgcolor: '#1890ff'
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+</script>
+<style scoped>
+  .my-tree-node {
+    white-space: nowrap;
+    background: #fff;
+    color: #fff;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+  }
+</style>
+```
+
+## props
+
+- data _数据源_
+
+  > type: **Object**
+
+- nodeKey _子节点数组中元素的唯一 key（如 ID）_
+
+  > type: **String | Number | Function | Boolean**
+  >
+  > default: **undefined**
+  >
+  > 若为静态数据可无需设置该值，若需支持数据节点的增删改则必须为数组中每个元素设置唯一 key 值，否则可能导致 dom 更新错误，参考 [Vue key](https://cn.vuejs.org/v2/api/#key)
+
+- childrenKey _子节点数组的键_
+
+  > type: **String**
+  >
+  > default: **"children"**
+
+- transition _节点增删改动画时间_
+
+  > type: **Number**
+  >
+  > default: **0**
+
+- lineColor _父子节点连线颜色_
+
+  > type: **String**
+  >
+  > default: **"#666"**
+
+- lineOffset _父子节点连线偏移量_
+
+  > type: **Number**
+  >
+  > default: **20**
+
+- lineWidth _父子节点连线宽度_
+
+  > type: **Number**
+  >
+  > default: 2
