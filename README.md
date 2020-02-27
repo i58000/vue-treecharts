@@ -18,7 +18,7 @@ Contact me for any questions: nerfthisan@163.com
 
 ## Example
 
-<img src="https://raw.githubusercontent.com/i58000/vue-treecharts/master/example.png" width="280"/>
+<img src="https://raw.githubusercontent.com/i58000/vue-treecharts/master/example.png" width="400"/>
 
 ```html
 <template>
