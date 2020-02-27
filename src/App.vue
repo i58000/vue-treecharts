@@ -11,14 +11,21 @@
       :nodeKey="item => item.data.name"
     >
       <template v-slot:node="{node}">
-        <div class="my-tree-node" :class="node.data.type">{{node.data.name}}</div>
+        <div class="my-tree-node" :style="{ background: node.data.bgcolor }">
+          <span>{{node.data.name}}</span>
+          <span v-if="node.data.editable">
+            <button>append</button>
+            <button>remove</button>
+            <button>edit</button>
+          </span>
+        </div>
       </template>
     </TreeChart>
   </div>
 </template>
 
 <script>
-import TreeChart from "../dist/vue-treechart.js";
+import TreeChart from "../dist/vue-treecharts.js";
 
 export default {
   components: {
@@ -27,35 +34,39 @@ export default {
   data() {
     return {
       treedata: {
-        data: { name: "root", type: "primary" },
+        data: { name: "root", bgcolor: "#1890ff" },
         children: [
           {
-            data: { name: "L1#1", type: "primary" },
+            data: { name: "L1#1", bgcolor: "#1890ff" },
             children: [
               {
-                data: { name: "L2#1", type: "primary" }
+                data: { name: "L2#1 - ANJINSHUO", bgcolor: "#1890ff" }
               },
               {
-                data: { name: "L2#2", type: "error" }
+                data: {
+                  name: "L2#2 - nerfthisan@163.com",
+                  bgcolor: "#f5222d"
+                }
               },
               {
-                data: { name: "L2#3", type: "success" }
+                data: { name: "L2#3 - i58000 @ github", bgcolor: "#52c41a" }
               },
               {
-                data: { name: "L2#4", type: "warning" }
+                data: { name: "L2#4 - anjs @ npm", bgcolor: "#faad14" }
               }
             ]
           },
           {
             data: {
-              name: "L1#2",
-              type: "primary"
+              name: "L1#2-loooooooooooooong loooooooooooooong ago",
+              bgcolor: "#1890ff"
             }
           },
           {
             data: {
               name: "L1#3",
-              type: "primary"
+              bgcolor: "#1890ff",
+              editable: true
             }
           }
         ]
@@ -66,27 +77,23 @@ export default {
 </script>
 <style scoped>
 .my-tree-node {
+  white-space: nowrap;
   background: #fff;
+  color: #fff;
   padding: 10px;
   margin: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border: 1px solid #d9d9d9;
   border-radius: 4px;
 }
-.success {
-  color: #fff;
-  background: #52c41a;
-}
-.warning {
-  color: #fff;
-  background: #faad14;
-}
-.error {
-  color: #fff;
-  background: #f5222d;
-}
-.primary {
-  color: #fff;
-  background: #1890ff;
+button {
+  border: none;
+  border-radius: 4px;
+  background: #fff;
+  outline: none;
+  width: 80px;
+  height: 20px;
+  margin-left: 10px;
+  color: #333;
 }
 </style>

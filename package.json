@@ -1,10 +1,10 @@
 {
   "name": "vue-treecharts",
   "description": "AN Vue tree chart component",
-  "version": "1.0.3",
+  "version": "1.1.1",
   "author": "AN JINSHUO",
   "license": "MIT",
-  "main": "dist/vue-treechart.js",
+  "main": "dist/vue-treecharts.js",
   "files": [
     "dist"
   ],
@@ -36,11 +36,11 @@
   "keywords": [
     "vue",
     "tree",
-	"chart",
-	"component",
-	"graph",
-	"view",
-	"ui"
+    "chart",
+    "component",
+    "graph",
+    "view",
+    "ui"
   ],
   "repository": {
     "type": "git",
