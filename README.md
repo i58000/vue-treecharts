@@ -1,6 +1,6 @@
 # vue-treecharts
 
-[![npm](https://camo.githubusercontent.com/f1e43ea61f962932d2fd7e05c558eb460191f41e/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f762f7675652e737667)](https://www.npmjs.com/package/vue-treecharts)
+[![npm](https://img.shields.io/badge/npm-vue--treecharts-brightgreen.svg)](https://www.npmjs.com/package/vue-treecharts)
 
 > Tree chart component based on Vue 2.0
 
@@ -34,11 +34,14 @@ Contact me for any questions: nerfthisan@163.com
       :nodeKey="item => item.data.name"
     >
       <template v-slot:node="{node}">
-        <div
-          class="my-tree-node"
-          :style="{ background: node.data.bgcolor }"
-          v-text="node.data.name"
-        ></div>
+        <div class="my-tree-node" :style="{ background: node.data.bgcolor }">
+          <span>{{node.data.name}}</span>
+          <span v-if="node.data.editable">
+            <button>append</button>
+            <button>remove</button>
+            <button>edit</button>
+          </span>
+        </div>
       </template>
     </TreeChart>
   </div>
@@ -46,6 +49,7 @@ Contact me for any questions: nerfthisan@163.com
 
 <script>
   import TreeChart from 'vue-treecharts'
+
   export default {
     components: {
       TreeChart
@@ -59,29 +63,33 @@ Contact me for any questions: nerfthisan@163.com
               data: { name: 'L1#1', bgcolor: '#1890ff' },
               children: [
                 {
-                  data: { name: 'L2#1', bgcolor: '#1890ff' }
+                  data: { name: 'L2#1 - ANJINSHUO', bgcolor: '#1890ff' }
                 },
                 {
-                  data: { name: 'L2#2', bgcolor: '#f5222d' }
+                  data: {
+                    name: 'L2#2 - nerfthisan@163.com',
+                    bgcolor: '#f5222d'
+                  }
                 },
                 {
-                  data: { name: 'L2#3', bgcolor: '#52c41a' }
+                  data: { name: 'L2#3 - i58000 @ github', bgcolor: '#52c41a' }
                 },
                 {
-                  data: { name: 'L2#4', bgcolor: '#faad14' }
+                  data: { name: 'L2#4 - anjs @ npm', bgcolor: '#faad14' }
                 }
               ]
             },
             {
               data: {
-                name: 'L1#2-loooooooooooooong',
+                name: 'L1#2-loooooooooooooong loooooooooooooong ago',
                 bgcolor: '#1890ff'
               }
             },
             {
               data: {
                 name: 'L1#3',
-                bgcolor: '#1890ff'
+                bgcolor: '#1890ff',
+                editable: true
               }
             }
           ]
@@ -90,18 +98,6 @@ Contact me for any questions: nerfthisan@163.com
     }
   }
 </script>
-<style scoped>
-  .my-tree-node {
-    white-space: nowrap;
-    background: #fff;
-    color: #fff;
-    padding: 10px;
-    margin: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-  }
-</style>
 ```
 
 ## props
