@@ -1,6 +1,6 @@
 <template>
   <div class="an-treechart-node" :style="style">
-    <slot name="node" :node="node">{{node}}</slot>
+    <slot name="node" :node="node">EMPTY-NODE</slot>
     <div
       class="an-treechart-node__children"
       v-if="node[childrenKey] && node[childrenKey].length > 0"
