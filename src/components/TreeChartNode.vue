@@ -1,9 +1,11 @@
 <template>
   <div class="an-treechart-node" :style="style">
-    <slot name="node" :node="node">EMPTY-NODE</slot>
+    <!-- 节点内容 -->
+    <slot :node="node" :childrenVisible="childrenVisible">EMPTY</slot>
+    <!-- 子节点 -->
     <div
       class="an-treechart-node__children"
-      v-if="node[childrenKey] && node[childrenKey].length > 0"
+      v-if="visibleChildren && node[childrenKey] && node[childrenKey].length > 0"
     >
       <TreeChartNode
         ref="children"
@@ -11,11 +13,12 @@
         :key="_nodeKey(item, index)"
         :node="item"
       >
-        <template v-slot:node="{node}">
-          <slot name="node" :node="node"></slot>
+        <template v-slot="{node, childrenVisible}">
+          <slot :node="node" :childrenVisible="childrenVisible"></slot>
         </template>
       </TreeChartNode>
     </div>
+    <!-- 父子连线 -->
     <svg
       class="an-treechart-node__line"
       width="100%"
@@ -38,7 +41,8 @@ export default {
     "lineOffset",
     "lineColor",
     "lineWidth",
-    "transition"
+    "transition",
+    "rerender"
     // "collect"
   ],
   props: {
@@ -60,7 +64,8 @@ export default {
       elHeight: 0,
       elWidth: 0,
       subtreeHeight: 0,
-      subtreeWidth: 0
+      subtreeWidth: 0,
+      visibleChildren: true
     };
   },
   computed: {
@@ -77,6 +82,13 @@ export default {
     }
   },
   methods: {
+    childrenVisible(v) {
+      if (typeof v === "boolean") {
+        this.visibleChildren = v;
+        this.rerender();
+      }
+      return this.visibleChildren;
+    },
     render() {
       return new Promise(resolve => {
         // 节点收集
@@ -132,9 +144,15 @@ export default {
       }
       const parentRect = this.$parent.$el.getBoundingClientRect();
       const selfRect = this.$el.getBoundingClientRect();
+
       this.styleOfSvg = {
         height:
-          Math.abs(parentRect.top - selfRect.top) + parentRect.height + "px",
+          Math.max(
+            parentRect.top + parentRect.height,
+            selfRect.top + selfRect.height
+          ) -
+          Math.min(parentRect.top, selfRect.top) +
+          "px",
         top: Math.min(0, parentRect.top - selfRect.top) + "px",
         left: parentRect.left - selfRect.left + "px",
         width: parentRect.width + selfRect.width + "px"
@@ -142,10 +160,6 @@ export default {
 
       const startX = parentRect.width + this.lineOffset;
       const startY =
-        // selfRect.top -
-        // parentRect.top +
-        // selfRect.height / 2 +
-        // Math.max(0, parentRect.top - selfRect.top);
         selfRect.height / 2 + Math.max(0, selfRect.top - parentRect.top);
 
       const endX = parentRect.width - this.lineOffset;
@@ -231,4 +245,3 @@ export default {
   z-index: -1;
 }
 </style>
-

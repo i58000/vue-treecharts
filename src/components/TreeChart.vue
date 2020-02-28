@@ -1,8 +1,8 @@
 <template>
   <div class="an-treechart" :style="style">
     <TreeChartNode ref="root" :node="data" v-if="data && Object.keys(data).length !== 0">
-      <template v-slot:node="{node}">
-        <slot name="node" :node="node"></slot>
+      <template v-slot="{node, childrenVisible}">
+        <slot :node="node" :childrenVisible="childrenVisible"></slot>
       </template>
     </TreeChartNode>
   </div>
@@ -26,6 +26,7 @@ export default {
       lineWidth: this.lineWidth,
       transition: this.transition,
 
+      rerender: this.rerender
       // collect: this._collect
     };
   },
@@ -58,7 +59,7 @@ export default {
   },
   data() {
     return {
-      style: {},
+      style: {}
       // map: new WeakMap()
     };
   },
@@ -85,7 +86,7 @@ export default {
         width: this.$refs.root.blockWidth + "px",
         height: this.$refs.root.blockHeight + "px"
       };
-    },
+    }
     // _collect(obj) {
     //   this.map.set(obj.node, obj);
     // }

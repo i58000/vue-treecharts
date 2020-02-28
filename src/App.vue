@@ -10,13 +10,14 @@
       :transition="0.3"
       :nodeKey="item => item.data.name"
     >
-      <template v-slot:node="{node}">
+      <template v-slot="{node, childrenVisible}">
         <div class="my-tree-node" :style="{ background: node.data.bgcolor }">
           <span>{{node.data.name}}</span>
           <span v-if="node.data.editable">
             <button>append</button>
             <button>remove</button>
-            <button>edit</button>
+            <button @click="childrenVisible(true)">showChildren</button>
+            <button @click="childrenVisible(false)">hideChildren</button>
           </span>
         </div>
       </template>
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import TreeChart from "../dist/vue-treecharts.js";
+import TreeChart from "./index.js";
 
 export default {
   components: {
@@ -67,7 +68,18 @@ export default {
               name: "L1#3",
               bgcolor: "#1890ff",
               editable: true
-            }
+            },
+            children: [
+              {
+                data: { name: "children 1", bgcolor: "#1890ff" }
+              },
+              {
+                data: { name: "children 2", bgcolor: "#1890ff" }
+              },
+              {
+                data: { name: "children 3", bgcolor: "#1890ff" }
+              }
+            ]
           }
         ]
       }
@@ -91,7 +103,7 @@ button {
   border-radius: 4px;
   background: #fff;
   outline: none;
-  width: 80px;
+  width: 90px;
   height: 20px;
   margin-left: 10px;
   color: #333;

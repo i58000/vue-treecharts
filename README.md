@@ -18,7 +18,7 @@ Contact me for any questions: nerfthisan@163.com
 
 ## Example
 
-<img src="https://raw.githubusercontent.com/i58000/vue-treecharts/master/example.png" width="400"/>
+<img src="https://raw.githubusercontent.com/i58000/vue-treecharts/master/example.png" width="460"/>
 
 ```html
 <template>
@@ -33,13 +33,14 @@ Contact me for any questions: nerfthisan@163.com
       :transition="0.3"
       :nodeKey="item => item.data.name"
     >
-      <template v-slot:node="{node}">
-        <div class="my-tree-node" :style="{ background: node.data.bgcolor }">
+      <template v-slot="{node, childrenVisible}">
+        <div :style="{ background: node.data.bgcolor }">
           <span>{{node.data.name}}</span>
           <span v-if="node.data.editable">
             <button>append</button>
             <button>remove</button>
-            <button>edit</button>
+            <button @click="childrenVisible(true)">showChildren</button>
+            <button @click="childrenVisible(false)">hideChildren</button>
           </span>
         </div>
       </template>
@@ -49,7 +50,6 @@ Contact me for any questions: nerfthisan@163.com
 
 <script>
   import TreeChart from 'vue-treecharts'
-
   export default {
     components: {
       TreeChart
@@ -90,7 +90,18 @@ Contact me for any questions: nerfthisan@163.com
                 name: 'L1#3',
                 bgcolor: '#1890ff',
                 editable: true
-              }
+              },
+              children: [
+                {
+                  data: { name: 'children 1', bgcolor: '#1890ff' }
+                },
+                {
+                  data: { name: 'children 2', bgcolor: '#1890ff' }
+                },
+                {
+                  data: { name: 'children 3', bgcolor: '#1890ff' }
+                }
+              ]
             }
           ]
         }
@@ -116,7 +127,7 @@ Contact me for any questions: nerfthisan@163.com
   >
   > 若为静态数据可无需设置该值，若需支持数据节点的增删改则必须为数组中每个元素设置唯一 key 值，否则可能导致 dom 更新错误，参考 [Vue key](https://cn.vuejs.org/v2/api/#key)
 
-- childrenKey _子节点数组的键_
+- childrenKey _子节点数组所在的属性键名_
 
   > type: **String**
   >
@@ -145,3 +156,13 @@ Contact me for any questions: nerfthisan@163.com
   > type: **Number**
   >
   > default: 2
+
+#### slots
+
+- default _节点自定义内容_
+
+  > slotProps: { node, childrenVisible }
+  >
+  > - node: 数据节点对象
+  >
+  > - childrenVisible: Function，控制当前节点的子节点是否显示的函数，参数必须为 `boolean` 类型，返回值为子节点是否显示。
